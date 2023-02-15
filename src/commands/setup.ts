@@ -41,13 +41,7 @@ export class SetupCommand {
 			}
 		});
 
-		if (user != null && user.verified) {
-			interaction.reply({
-				content: `You've already linked your pronouns.page!`,
-				ephemeral: true
-			});
-			return;
-		} else if (user == null) {
+		if (user == null) {
 			user = await prisma.user.create({
 				data: {
 					discordId: interaction.user.id,
@@ -55,6 +49,14 @@ export class SetupCommand {
 					pronounsPage: username
 				}
 			});
+		}
+
+		if (user.verified) {
+			interaction.reply({
+				content: `You've already linked your pronouns.page!`,
+				ephemeral: true
+			});
+			return;
 		}
 
 		let phrase = user.verificationPhrase;
@@ -75,7 +77,7 @@ export class SetupCommand {
 		const button = new ButtonBuilder()
 			.setLabel('Link account')
 			.setStyle(ButtonStyle.Primary)
-			.setCustomId(`link_${username}`);
+			.setCustomId(`link`);
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 
 		await interaction.reply({
@@ -85,7 +87,7 @@ export class SetupCommand {
 		});
 	}
 
-	@ButtonComponent({ id: /link_[A-Za-z_\-0-9]{0,24}/ })
+	@ButtonComponent({ id: 'link' })
 	async handler(interaction: ButtonInteraction): Promise<void> {
 		let user = await prisma.user.findFirst({
 			where: {

@@ -1,4 +1,4 @@
-type Opinion = 'yes' | 'close' | 'meh' | 'no';
+export type Opinion = 'close' | 'yes' | 'meh' | 'no';
 
 interface Options {
 	value: String;
