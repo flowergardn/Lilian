@@ -1,0 +1,17 @@
+# ENV
+*.env
+!example.env
+
+# Typescript
+dist/
+
+# NodeJS
+node_modules/
+package-lock.json
+
+#IntelliJ
+.idea/
+
+# Prisma
+prisma/*
+!prisma/schema.prisma
