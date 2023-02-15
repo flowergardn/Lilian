@@ -9,4 +9,5 @@ COPY . .
 
 # Install dependencies, then run the program
 RUN npm install --production
+RUN npm run migrate
 ENTRYPOINT [ "npm", "start" ]
