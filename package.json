@@ -8,7 +8,8 @@
 		"start": "node .",
 		"prestart": "tsc --p tsconfig.json",
 		"format": "prettier --write ./",
-		"dev": "npm run format && ts-node src/index.ts"
+		"dev": "npm run format && ts-node src/index.ts",
+		"migrate": "npx prisma migrate dev --name init"
 	},
 	"keywords": [],
 	"author": "Astrid",

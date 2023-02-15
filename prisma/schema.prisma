@@ -6,8 +6,11 @@ generator client {
 }
 
 datasource db {
+  // This is strictly meant for development / outside of docker.
+  // If you're using Docker, setup Postgres :)
+  // https://www.prisma.io/docs/concepts/components/prisma-schema/data-sources
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
