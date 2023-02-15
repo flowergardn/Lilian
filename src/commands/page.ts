@@ -21,16 +21,13 @@ export class PageCommand {
 		@SlashOption({
 			description: 'The member to search for',
 			name: 'member',
-			required: false,
+			required: true,
 			type: ApplicationCommandOptionType.User
 		})
 		member: User,
 		interaction: CommandInteraction
 	) {
-		let user = member;
-		if (!user) user = interaction.user;
-
-		if (user.bot) {
+		if (member.bot) {
 			await interaction.reply({
 				content:
 					"Sadly technology isn't advanced enough for all Discord bots to have pronouns.page accounts :(",
@@ -41,13 +38,13 @@ export class PageCommand {
 
 		let chosenUser = await prisma.user.findFirst({
 			where: {
-				discordId: user.id
+				discordId: member.id
 			}
 		});
 
 		if (chosenUser == null) {
 			await interaction.reply({
-				embeds: [embeds.notLinked(user)],
+				embeds: [embeds.notLinked(member)],
 				ephemeral: true
 			});
 			return;
@@ -88,7 +85,7 @@ export class PageCommand {
 		const button = new ButtonBuilder()
 			.setLabel('View words')
 			.setStyle(ButtonStyle.Primary)
-			.setCustomId(`words_${user.id}`);
+			.setCustomId(`words_${member.id}`);
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 
 		await interaction.reply({
