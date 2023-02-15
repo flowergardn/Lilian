@@ -56,6 +56,3 @@ export class NamesCommand {
 		});
 	}
 }
-
-// add names
-// add overview (names, pronouns, words)

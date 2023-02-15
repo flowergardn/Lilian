@@ -2,12 +2,12 @@ import {
 	CommandInteraction,
 	ApplicationCommandOptionType,
 	EmbedBuilder,
-	User,
 	ButtonBuilder,
 	ActionRowBuilder,
 	ButtonInteraction,
 	ButtonStyle,
-	APIEmbedField
+	APIEmbedField,
+	GuildMember
 } from 'discord.js';
 import { Slash, Discord, SlashOption, ButtonComponent } from 'discordx';
 import { prisma } from '../index';
@@ -24,10 +24,25 @@ export class PageCommand {
 			required: true,
 			type: ApplicationCommandOptionType.User
 		})
-		member: User,
+		member: GuildMember,
 		interaction: CommandInteraction
 	) {
-		if (member.bot) {
+
+		
+		// this *should* work
+		if(member.partial) member.fetch()
+
+		const {user} = member
+
+		if(!user) {
+			await interaction.reply({
+				content: "Could not find that member. Are you sure they're in this server?",
+				ephemeral: true
+			})
+			return;
+		}
+
+		if (user.bot) {
 			await interaction.reply({
 				content:
 					"Sadly technology isn't advanced enough for all Discord bots to have pronouns.page accounts :(",
@@ -38,13 +53,13 @@ export class PageCommand {
 
 		let chosenUser = await prisma.user.findFirst({
 			where: {
-				discordId: member.id
+				discordId: user.id
 			}
 		});
 
 		if (chosenUser == null) {
 			await interaction.reply({
-				embeds: [embeds.notLinked(member)],
+				embeds: [embeds.notLinked(user)],
 				ephemeral: true
 			});
 			return;
