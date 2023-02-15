@@ -4,9 +4,9 @@ import {
 	UserContextMenuCommandInteraction
 } from 'discord.js';
 import { Discord, ContextMenu } from 'discordx';
-import { getUser, getEmoji } from '../utils/PronounsAPI';
-import { prisma } from '../index';
-import * as embeds from '../utils/Embeds';
+import { getUser, getEmoji } from '../../utils/PronounsAPI';
+import { prisma } from '../../index';
+import * as embeds from '../../utils/Embeds';
 
 @Discord()
 export class NamesCommand {
@@ -20,8 +20,10 @@ export class NamesCommand {
 		if (user.bot) {
 			await interaction.reply({
 				content:
-					"Sadly technology isn't advanced enough for all Discord bots to have pronouns.page accounts :("
+					"Sadly technology isn't advanced enough for all Discord bots to have pronouns.page accounts :(",
+				ephemeral: true
 			});
+			return;
 		}
 
 		let chosenUser = await prisma.user.findFirst({
@@ -40,16 +42,14 @@ export class NamesCommand {
 
 		let apiData = await getUser(chosenUser.pronounsPage);
 
-		const _names = [];
-
-		apiData.allNames.map((name) => {
+		const names = apiData.allNames.map((name) => {
 			let emoji = getEmoji(name.opinion);
-			_names.push(`${emoji} ${name.value}`);
+			return `${emoji} ${name.value}`;
 		});
 
 		const embed = new EmbedBuilder().setColor('#9beba7');
 		embed.setTitle(`${user.username}s names`);
-		embed.setDescription(_names.join('\n'));
+		embed.setDescription(names.join('\n'));
 		await interaction.reply({
 			embeds: [embed],
 			ephemeral: true

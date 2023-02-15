@@ -8,13 +8,19 @@ interface UserResponse {
 
 class User {
 	private profile: EnglishProfile;
+	private data: PageData;
 
 	constructor(r: UserResponse) {
+		this.data = r.data;
 		this.profile = r.data.profiles.en;
 	}
 
 	get description() {
 		return this.profile.description;
+	}
+
+	get age() {
+		return this.profile.age;
 	}
 
 	get pronouns() {
@@ -27,6 +33,18 @@ class User {
 
 	get allNames() {
 		return this.profile.names;
+	}
+
+	get words() {
+		return this.profile.words;
+	}
+
+	get username() {
+		return this.data.username;
+	}
+
+	get avatar() {
+		return this.data.avatar;
 	}
 }
 
@@ -50,5 +68,11 @@ export const getEmoji = (type: Opinion) => {
 			return '<:close_friends:1075426436174848011>';
 		case 'meh':
 			return '👍';
+		case 'jokingly':
+			return '😜';
+		default: {
+			console.log(`${type} was not specified.`);
+			return '❔';
+		}
 	}
 };
