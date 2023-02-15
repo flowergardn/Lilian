@@ -44,7 +44,7 @@ export class PageCommand {
 
 		if (chosenUser == null) {
 			await interaction.reply({
-				embeds: [embeds.notLinked(member)],
+				embeds: [embeds.notLinked(member.user)],
 				ephemeral: true
 			});
 			return;
