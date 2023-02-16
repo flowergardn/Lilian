@@ -30,11 +30,12 @@ export class PageCommand {
 
 		
 		// this *should* work
-		if(member.partial) member.fetch()
+		if(member.partial) await member.fetch()
 
 		const {user} = member
 
 		if(!user) {
+			console.log(member)
 			await interaction.reply({
 				content: "Could not find that member. Are you sure they're in this server?",
 				ephemeral: true

@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { importx } from '@discordx/importer';
 import { Client } from 'discordx';
 import NodeCache from 'node-cache';
-import { CommandInteraction, EmbedBuilder } from 'discord.js';
+import { CommandInteraction, EmbedBuilder, GatewayIntentBits } from 'discord.js';
 import { PrismaClient } from '@prisma/client';
 
 require('dotenv').config();
@@ -13,7 +13,7 @@ const commandCache = new NodeCache({ stdTTL: 2.5 });
 export const prisma = new PrismaClient();
 
 export const client = new Client({
-	intents: [],
+	intents: [GatewayIntentBits.GuildMembers],
 	silent: false
 });
 
