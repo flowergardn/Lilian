@@ -2,9 +2,13 @@
 
 This is a bot that brings pronouns.page into Discord!
 
+## Invite the bot
+
+You can invite the bot [here](https://bit.ly/3I3IWnN), top.gg link will come soon.
+
 ## Running the bot
 
-Running the bot is very simple.
+If you don't want to use the hosted version, you can run your own instance pretty simply.
 
 ### Create a volume
 
