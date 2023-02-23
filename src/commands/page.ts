@@ -29,8 +29,7 @@ export class PageCommand {
 	) {
 
 		
-		// this *should* work
-		if(member.partial) await member.fetch()
+		await member.fetch()
 
 		const {user} = member
 
