@@ -27,18 +27,16 @@ export class PageCommand {
 		member: GuildMember,
 		interaction: CommandInteraction
 	) {
+		await member.fetch();
 
-		
-		await member.fetch()
+		const { user } = member;
 
-		const {user} = member
-
-		if(!user) {
-			console.log(member)
+		if (!user) {
+			console.log(member);
 			await interaction.reply({
 				content: "Could not find that member. Are you sure they're in this server?",
 				ephemeral: true
-			})
+			});
 			return;
 		}
 
@@ -82,7 +80,13 @@ export class PageCommand {
 			iconURL: apiData.avatar,
 			url: `https://en.pronouns.page/@${apiData.username}`
 		});
-		embed.setDescription(`🍰 Age: ${apiData.age}\n> ${apiData.description ?? ''}`);
+
+		const embedDesc = [`🍰 Age: ${apiData.age}`];
+
+		if (apiData.description && apiData.description.length > 0)
+			embedDesc.push(`> ${apiData.description}`);
+
+		embed.setDescription(embedDesc.join("\n"));
 
 		embed.addFields([
 			{
