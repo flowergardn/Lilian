@@ -16,7 +16,8 @@ class User {
 	}
 
 	get description() {
-		return this.profile.description;
+		let {description} = this.profile
+		return description ?? "";
 	}
 
 	get age() {
