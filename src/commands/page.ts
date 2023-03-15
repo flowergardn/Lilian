@@ -151,6 +151,7 @@ export class PageCommand {
 		const embed = new EmbedBuilder().setColor('#9beba7');
 		embed.setTitle(`Words to use and what not to use`);
 		embed.setFields(fields);
+		embed.setFooter({ text: '💖 Yes • 😜 Jokingly • 👥 Only if we\'re close • 👍 Okay • 👎 Nope • ❔ Custom' })
 		await interaction.editReply({
 			embeds: [embed]
 		});
