@@ -84,7 +84,7 @@ export class PageCommand {
 		const embedDesc = [`🍰 Age: ${apiData.age}`];
 
 		if (apiData.description && apiData.description.length > 0)
-			embedDesc.push(`> ${apiData.description}`);
+			embedDesc.push(`>>> ${apiData.description}`);
 
 		embed.setDescription(embedDesc.join("\n"));
 
@@ -100,6 +100,8 @@ export class PageCommand {
 				inline: true
 			}
 		]);
+		
+		embed.setFooter({ text: '💖 Yes • 😜 Jokingly • 👥 Only if we\'re close • 👍 Okay • 👎 Nope • ❔ Custom' })
 
 		const button = new ButtonBuilder()
 			.setLabel('View words')
@@ -149,6 +151,7 @@ export class PageCommand {
 		const embed = new EmbedBuilder().setColor('#9beba7');
 		embed.setTitle(`Words to use and what not to use`);
 		embed.setFields(fields);
+		embed.setFooter({ text: '💖 Yes • 😜 Jokingly • 👥 Only if we\'re close • 👍 Okay • 👎 Nope • ❔ Custom' })
 		await interaction.editReply({
 			embeds: [embed]
 		});

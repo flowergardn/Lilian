@@ -64,9 +64,9 @@ export const getEmoji = (type: Opinion) => {
 		case 'yes':
 			return '💖';
 		case 'no':
-			return '❌';
+			return '👎';
 		case 'close':
-			return '<:close_friends:1075426436174848011>';
+			return '👥';
 		case 'meh':
 			return '👍';
 		case 'jokingly':
