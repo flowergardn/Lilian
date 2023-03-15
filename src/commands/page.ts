@@ -100,6 +100,8 @@ export class PageCommand {
 				inline: true
 			}
 		]);
+		
+		embed.setFooter({ text: '💖 Yes • 😜 Jokingly • 👥 Only if we\'re close • 👍 Okay • 👎 Nope • ❔ Custom' })
 
 		const button = new ButtonBuilder()
 			.setLabel('View words')
