@@ -84,7 +84,7 @@ export class PageCommand {
 		const embedDesc = [`🍰 Age: ${apiData.age}`];
 
 		if (apiData.description && apiData.description.length > 0)
-			embedDesc.push(`> ${apiData.description}`);
+			embedDesc.push(`>>> ${apiData.description}`);
 
 		embed.setDescription(embedDesc.join("\n"));
 
