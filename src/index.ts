@@ -4,13 +4,10 @@ import { importx } from '@discordx/importer';
 import { Client } from 'discordx';
 import NodeCache from 'node-cache';
 import { CommandInteraction, EmbedBuilder, GatewayIntentBits } from 'discord.js';
-import { PrismaClient } from '@prisma/client';
 
 require('dotenv').config();
 
 const commandCache = new NodeCache({ stdTTL: 2.5 });
-
-export const prisma = new PrismaClient();
 
 export const client = new Client({
 	intents: [GatewayIntentBits.GuildMembers],
@@ -49,12 +46,4 @@ async function start() {
 	await client.login(process.env.TOKEN!!);
 }
 
-start()
-	.then(async () => {
-		await prisma.$disconnect();
-	})
-	.catch(async (e) => {
-		console.error(e);
-		await prisma.$disconnect();
-		process.exit(1);
-	});
+start();

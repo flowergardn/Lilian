@@ -8,10 +8,3 @@ dist/
 # NodeJS
 node_modules/
 package-lock.json
-
-#IntelliJ
-.idea/
-
-# Prisma
-prisma/*
-!prisma/schema.prisma

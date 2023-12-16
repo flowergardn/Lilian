@@ -1,0 +1,8 @@
+version: '3'
+services:
+  lilian:
+    container_name: lilian
+    image: ghcr.io/astridlol/lilian:main
+    env_file:
+      - ./.env
+    restart: always

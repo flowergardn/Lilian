@@ -10,8 +10,7 @@ import {
 	GuildMember
 } from 'discord.js';
 import { Slash, Discord, SlashOption, ButtonComponent } from 'discordx';
-import { prisma } from '../index';
-import { getUser, getEmoji } from '../utils/PronounsAPI';
+import { getUserByDiscord, getEmoji } from '../utils/PronounsAPI';
 import * as embeds from '../utils/Embeds';
 
 @Discord()
@@ -27,66 +26,60 @@ export class PageCommand {
 		member: GuildMember,
 		interaction: CommandInteraction
 	) {
+		await interaction.deferReply({
+			ephemeral: true
+		});
+
 		await member.fetch();
 
 		const { user } = member;
 
 		if (!user) {
-			console.log(member);
-			await interaction.reply({
-				content: "Could not find that member. Are you sure they're in this server?",
-				ephemeral: true
+			await interaction.editReply({
+				content: "Could not find that member. Are you sure they're in this server?"
 			});
 			return;
 		}
 
 		if (user.bot) {
-			await interaction.reply({
+			await interaction.editReply({
 				content:
-					"Sadly technology isn't advanced enough for all Discord bots to have pronouns.page accounts :(",
-				ephemeral: true
+					"Sadly technology isn't advanced enough for all Discord bots to have pronouns.page accounts :("
 			});
 			return;
 		}
 
-		let chosenUser = await prisma.user.findFirst({
-			where: {
-				discordId: user.id
-			}
-		});
+		let chosenUser = await getUserByDiscord(user.id);
 
 		if (chosenUser == null) {
-			await interaction.reply({
-				embeds: [embeds.notLinked(user)],
-				ephemeral: true
+			await interaction.editReply({
+				embeds: [embeds.notLinked(user)]
 			});
 			return;
 		}
 
-		let apiData = await getUser(chosenUser.pronounsPage);
-
-		const pronouns = apiData.allPronouns.map((pronoun) => {
+		const pronouns = chosenUser.allPronouns.map((pronoun) => {
 			let emoji = getEmoji(pronoun.opinion);
 			return `${emoji} ${pronoun.value}`;
 		});
-		const names = apiData.allNames.map((name) => {
+		const names = chosenUser.allNames.map((name) => {
 			let emoji = getEmoji(name.opinion);
 			return `${emoji} ${name.value}`;
 		});
 
 		const embed = new EmbedBuilder().setColor('#9beba7');
 		embed.setAuthor({
-			name: apiData.username,
-			iconURL: apiData.avatar,
-			url: `https://en.pronouns.page/@${apiData.username}`
+			name: chosenUser.username,
+			iconURL: chosenUser.avatar,
+			url: `https://en.pronouns.page/@${chosenUser.username}`
 		});
 
-		const embedDesc = [`🍰 Age: ${apiData.age}`];
+		const embedDesc = [`🍰 Age: ${chosenUser.age}`];
 
-		if (apiData.description && apiData.description.length > 0)
-			embedDesc.push(`> ${apiData.description}`);
+		if (chosenUser.description && chosenUser.description.length > 0)
+			embedDesc.push(`>>> ${chosenUser.description}`);
 
-		embed.setDescription(embedDesc.join("\n"));
+		embed.setDescription(embedDesc.join('\n'));
 
 		embed.addFields([
 			{
@@ -107,7 +100,7 @@ export class PageCommand {
 			.setCustomId(`words_${member.id}`);
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 
-		await interaction.reply({
+		await interaction.editReply({
 			embeds: [embed],
 			components: [row]
 		});
@@ -121,15 +114,9 @@ export class PageCommand {
 			ephemeral: true
 		});
 
-		const id = interaction.customId.split('_')[1];
+		const discordId = interaction.customId.split('_')[1];
 
-		let chosenUser = await prisma.user.findFirst({
-			where: {
-				discordId: id
-			}
-		});
-
-		let apiData = await getUser(chosenUser.pronounsPage);
+		let apiData = await getUserByDiscord(discordId);
 
 		let fields: APIEmbedField[] = apiData.words.map((category) => {
 			const fieldName = '‎';

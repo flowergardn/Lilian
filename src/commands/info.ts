@@ -1,5 +1,13 @@
 import { Discord, Slash } from 'discordx';
-import { ActionRowBuilder, bold, ButtonBuilder, ButtonStyle, ClientUser, CommandInteraction, EmbedBuilder } from 'discord.js';
+import {
+	ActionRowBuilder,
+	bold,
+	ButtonBuilder,
+	ButtonStyle,
+	ClientUser,
+	CommandInteraction,
+	EmbedBuilder
+} from 'discord.js';
 import { client } from '../index';
 
 @Discord()
@@ -14,7 +22,9 @@ class Info {
 
 		const embed = new EmbedBuilder();
 		embed.setTitle('Info');
-		embed.setDescription(`${user.username} is a bot created by astrid`);
+		embed.setDescription(
+			`${user.username} is a bot created by [astrid](https://twitter.com/maybeastrid)`
+		);
 		embed.addFields([
 			{
 				name: 'Servers',
@@ -23,7 +33,10 @@ class Info {
 			}
 		]);
 
-		const button = new ButtonBuilder().setLabel('View on GitHub').setStyle(ButtonStyle.Link).setURL('https://github.com/astridlol/Lilian');
+		const button = new ButtonBuilder()
+			.setLabel('View on GitHub')
+			.setStyle(ButtonStyle.Link)
+			.setURL('https://github.com/astridlol/Lilian');
 
 		const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 

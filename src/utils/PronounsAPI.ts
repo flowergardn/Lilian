@@ -2,6 +2,12 @@ import axios from 'axios';
 import PageData from '../interfaces/PageData';
 import { EnglishProfile, Opinion } from '../interfaces/PageData';
 
+import NodeCache from 'node-cache';
+
+const dataCache = new NodeCache({
+	stdTTL: 60
+});
+
 interface UserResponse {
 	data: PageData;
 }
@@ -16,8 +22,8 @@ class User {
 	}
 
 	get description() {
-		let {description} = this.profile
-		return description ?? "";
+		let { description } = this.profile;
+		return description ?? '';
 	}
 
 	get age() {
@@ -49,14 +55,34 @@ class User {
 	}
 }
 
-export const getUser = async (name: string): Promise<User> => {
+const getUser = async (name: string): Promise<User> => {
 	let resp: UserResponse;
 	try {
 		resp = await axios.get(`https://en.pronouns.page/api/profile/get/${name}?version=2`);
 	} catch (err) {
 		console.log(err);
 	}
+
 	return new User(resp);
+};
+
+export const getUserByDiscord = async (discordId: string): Promise<User> => {
+	const hasCache = dataCache.has(discordId);
+	if (hasCache) return dataCache.get(discordId) as User;
+
+	let resp: {
+		data: string;
+	};
+	try {
+		resp = await axios.get(`https://en.pronouns.page/api/user/social-lookup/discord/${discordId}`);
+	} catch (err) {
+		console.log(err);
+	}
+
+	const user = getUser(resp.data);
+	dataCache.set(discordId, user);
+
+	return user;
 };
 
 export const getEmoji = (type: Opinion) => {
