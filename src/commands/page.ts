@@ -30,7 +30,14 @@ export class PageCommand {
 			ephemeral: true
 		});
 
-		await interaction.guild.members.fetch();
+		try {
+			await interaction.guild.members.fetch();
+		} catch (err) {
+			await interaction.editReply({
+				content: 'Could not fetch members. Are permissions set up correctly?'
+			});
+			return;
+		}
 
 		const { user } = member;
 
