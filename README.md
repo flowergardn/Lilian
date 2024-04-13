@@ -4,7 +4,7 @@ This is a bot that brings pronouns.page into Discord!
 
 ## Invite the bot
 
-You can invite the bot [here](https://bit.ly/3I3IWnN), top.gg link will come soon.
+You can invite the bot [here](https://discord.com/oauth2/authorize?client_id=1075272310002561094&permissions=278528&scope=bot%20applications.commands), top.gg link will come soon.
 
 ## Running the bot
 
