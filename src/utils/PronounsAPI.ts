@@ -79,6 +79,8 @@ export const getUserByDiscord = async (discordId: string): Promise<User> => {
 		console.log(err);
 	}
 
+	if (resp.data == 'null') return null;
+
 	const user = getUser(resp.data);
 	dataCache.set(discordId, user);
 
