@@ -30,7 +30,7 @@ export class PageCommand {
 			ephemeral: true
 		});
 
-		await member.fetch();
+		await interaction.guild.members.fetch();
 
 		const { user } = member;
 
